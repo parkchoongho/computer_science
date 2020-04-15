@@ -97,3 +97,28 @@ Virtual memory takes **program addresses** and **maps** them to **RAM addresses*
 - **Program 1** stores your bank balance at address 1024 1B. **VM maps** it to **RAM address 1**
 - **Program 2** stores your video game score at address 1024 2B. **VM maps** it to **RAM address 5**
 - **Neither can touch the other's data!**
+
+
+
+## How does VM work?
+
+- Basic Idea: separate memory spaces
+- **Virtual Memory**: what the **program** sees
+  - e.g. Id R4, 1024(R0) accesses **virtual address** R0+1024=1024
+- **Physical Memory**: the **physical RAM** in the computer
+  - e.g. if you have 2GB of **RAM** installed, you have **physical addresses** 0 to 2^31 - 1
+- **Virtual Addresses(VA)**
+  - What the program uses
+  - In MIPS, this is the full 32-bit address space: 0 to 2^32 - 1
+- **Physical Addresses(PA)**
+  - What the hardware uses to talk to the RAM
+  - Address space determined by how much RAM is installed
+
+
+
+## How does a program access memory?
+
+1. Program executes a load with specifying a **virtual address(VA)**
+2. Computer **translates** the address to the **physical address(PA)** in memory
+3. (If the **physical address(PA)** is not in memory, the operating system loads it in from **disk**)
+4. The computer then **reads the RAM** using the **physical address(PA)** and returns the data to the program
