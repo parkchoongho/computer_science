@@ -122,3 +122,57 @@ Virtual memory takes **program addresses** and **maps** them to **RAM addresses*
 2. Computer **translates** the address to the **physical address(PA)** in memory
 3. (If the **physical address(PA)** is not in memory, the operating system loads it in from **disk**)
 4. The computer then **reads the RAM** using the **physical address(PA)** and returns the data to the program
+
+
+
+## Page Tables (Keeping track of VA -> PA mappings)
+
+The map from **Virtual Addresses(VA)** to **Physical Addresses(PA)** is the **Page Table**. So far we have had one **Page Table Entry (PTE)** for every **Virtual Address** 
+
+Q **How many entries do we need in our Page Table**?
+
+- 1 for every byte = 2^32 = 4 billions
+- 1 for every word = 2^30 = 1billion
+- 1 for every register = 32
+
+=> 1 for every word = 2^30 = 1billion
+
+We have a word-aligned memory so we need to be able to address every word.
+
+**Note**: each entry needs the PA which is 32 bits, so that's 1GB of memory for the Page Table alone!
+
+(1 word = 4 bytes?)
+
+
+
+## Page Table Size
+
+- We need to translate every possible address:
+  - Our programs have **32-bit Virtual Address** spaces
+  - That's 2^30 words that need **Page Table Entries** (1 billion entries!) 
+  - (If they don't have a **Page Table Entry** then we can't access them because we can't find the **physical address**.)
+- How can we make this more manageable?
+  - What if we divided memory up into chunks(**pages**) instead of words?
+
+**Fine-grain**: Maps each word address 2^30 words to map
+
+**Coarse-grain**: Maps chunks of address Fewer mappings
+
+
+
+## Coarse-grained: pages instead of words
+
+- The **Page Table** manages larger chunks (pages) of data:
+  - Fewer **Page Table Entries** needed to cover the whole address space
+  - But, less flexible in how to use the RAM (have to move a page at a time)
+- Today:
+  - Typically 4kB pages (1024 words per page)
+  - Sometimes 2MB pages (524,288 words per page)
+
+Q **How many entries do we need in our Page Table with 4kB pages on a 32-bit machine?** 
+
+- 1 for every word = 2^30 = 1billion
+- 1 for every 1024 words = 1 million
+- 1 for every 4096 words = 262,144
+
+=> 1 for every 1024 words = 1 million
